@@ -1,5 +1,5 @@
 --
--- log.lua
+-- pd-log.lua
 --
 -- Copyright (c) 2016 rxi
 --
@@ -13,7 +13,6 @@ log.usecolor = true
 log.outfile = nil
 log.level = "trace"
 
-
 local modes = {
   { name = "trace", color = "\27[34m", },
   { name = "debug", color = "\27[36m", },
@@ -23,19 +22,16 @@ local modes = {
   { name = "fatal", color = "\27[35m", },
 }
 
-
 local levels = {}
 for i, v in ipairs(modes) do
   levels[v.name] = i
 end
-
 
 local round = function(x, increment)
   increment = increment or 1
   x = x / increment
   return (x > 0 and math.floor(x + .5) or math.ceil(x - .5)) * increment
 end
-
 
 local _tostring = tostring
 
@@ -51,11 +47,22 @@ local tostring = function(...)
   return table.concat(t, " ")
 end
 
+local localTime = function()
+  return playdate.getTime().hour .. ':'
+      .. playdate.getTime().minute .. ':'
+      .. playdate.getTime().second
+end
+
+local localDate = function()
+  return playdate.getTime().day .. '/'
+      .. playdate.getTime().month .. '/'
+      .. playdate.getTime().year .. ' '
+      .. localTime()
+end
 
 for i, x in ipairs(modes) do
   local nameupper = x.name:upper()
   log[x.name] = function(...)
-    
     -- Return early if we're below the log level
     if i < levels[log.level] then
       return
@@ -67,24 +74,22 @@ for i, x in ipairs(modes) do
 
     -- Output to console
     print(string.format("%s[%-6s%s]%s %s: %s",
-                        log.usecolor and x.color or "",
-                        nameupper,
-                        os.date("%H:%M:%S"),
-                        log.usecolor and "\27[0m" or "",
-                        lineinfo,
-                        msg))
+      log.usecolor and x.color or "",
+      nameupper,
+      localTime(),
+      log.usecolor and "\27[0m" or "",
+      lineinfo,
+      msg))
 
     -- Output to log file
     if log.outfile then
-      local fp = io.open(log.outfile, "a")
+      local fp = playdate.file.open(log.outfile, playdate.file.kFileAppend)
       local str = string.format("[%-6s%s] %s: %s\n",
-                                nameupper, os.date(), lineinfo, msg)
+        nameupper, localDate(), lineinfo, msg)
       fp:write(str)
       fp:close()
     end
-
   end
 end
-
 
 return log
