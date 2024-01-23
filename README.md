@@ -6,7 +6,7 @@ A tiny logging module for the [Playdate](https://play.date/).
 
 ## Installation
 The [pd-log.lua](pd-log.lua?raw=1) file should be dropped into an existing project
-and required by it.
+and imported.
 ```lua
 log = import "pd-log"
 ``` 
