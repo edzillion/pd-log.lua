@@ -1,19 +1,19 @@
-# log.lua
-A tiny logging module for Lua. 
+# pd-log.lua
+A tiny logging module for the [Playdate](https://play.date/). 
 
 ![screenshot from 2014-07-04 19 55 55](https://cloud.githubusercontent.com/assets/3920290/3484524/2ea2a9c6-03ad-11e4-9ed5-a9744c6fd75d.png)
 
 
 ## Installation
-The [log.lua](log.lua?raw=1) file should be dropped into an existing project
+The [pd-log.lua](pd-log.lua?raw=1) file should be dropped into an existing project
 and required by it.
 ```lua
-log = require "log"
+log = import "pd-log"
 ``` 
 
 
 ## Usage
-log.lua provides 6 functions, each function takes all its arguments,
+pd-log.lua provides 6 functions, each function takes all its arguments,
 concatenates them into a string then outputs the string to the console and --
 if one is set -- the log file:
 
@@ -26,7 +26,7 @@ if one is set -- the log file:
 
 
 ### Additional options
-log.lua provides variables for setting additional options:
+pd-log.lua provides variables for setting additional options:
 
 #### log.usecolor
 Whether colors should be used when outputting to the console, this is `true` by
